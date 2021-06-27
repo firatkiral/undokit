@@ -1,9 +1,9 @@
 {
   "name": "undokit",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Lightweight undo manager.",
   "author": "Firat Kiral",
-  "license": "CC-BY-ND-4.0",
+  "license": "MIT",
   "main": "dist/undoKit.cjs",
   "types": "dist/undoKit.d.ts",
   "files": [
