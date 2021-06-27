@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>UndoKit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #container {
+            position: relative;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+            background-color: #333;
+            overflow: hidden;
+            margin: 20px;
+            border-radius: 7px;
+        }
+
+        #item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            left: calc(50% - 50px);
+            top: calc(50% - 50px);
+            background-color: rgb(255, 234, 45);
+            border: 10px solid rgba(136, 136, 136, .5);
+            border-radius: 50%;
+            user-select: none;
+        }
+
+        #item:active {
+            background-color: rgba(168, 218, 220, 1.00);
+        }
+
+        #item:hover {
+            cursor: pointer;
+            border-width: 20px;
+            width: 80px;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <span style="position: absolute; color: aliceblue; margin: 15px;">Ctrl+Z Undo / Ctrl+Shift+Z Redo</span>
+        <div id="item"></div>
+    </div>
+    <script type="module">
+        import { UndoKit } from "../../dist/undoKit.mjs"
+        // import { UndoKit } from "https://cdn.jsdelivr.net/gh/firatkiral/UndoKit@master/dist/undoKit.mjs"
+
+        let undoKit = new UndoKit()
+
+        class SetPosCmd {
+            constructor(element, newX, newY) {
+                this.element = element;
+                this.oldX = this.element.offsetLeft;
+                this.oldY = this.element.offsetTop;
+
+                this.newX = newX;
+                this.newY = newY;
+            }
+            undo() {
+                this.element.style.left = this.oldX + "px";
+                this.element.style.top = this.oldY + "px";
+            }
+            redo() {
+                this.element.style.left = this.newX + "px";
+                this.element.style.top = this.newY + "px";
+            }
+        }
+
+        document.onkeydown = function (e) {
+            var evtobj = window.event ? event : e
+            if (evtobj.keyCode == 90 && evtobj.ctrlKey && !evtobj.shiftKey) undoKit.undo();
+            if (evtobj.keyCode == 90 && evtobj.ctrlKey && evtobj.shiftKey) undoKit.redo();
+        };
+
+
+        var circle = document.querySelector("#item");
+        var container = document.querySelector("#container");
+
+        var active = false;
+        var circleCurrentX;
+        var circleCurrentY;
+        var mouesStartX;
+        var mouesStartY;
+        var circleStartX;
+        var circleStartY;
+
+        document.body.addEventListener("mousedown", dragStart, false);
+        document.body.addEventListener("mouseup", dragEnd, false);
+        document.body.addEventListener("mousemove", drag, false);
+
+        function dragStart(e) {
+            circleStartX = circle.offsetLeft;
+            circleStartY = circle.offsetTop;
+
+            mouesStartX = e.clientX;
+            mouesStartY = e.clientY;
+
+            if (e.target === circle) {
+                active = true;
+            }
+        }
+
+        function dragEnd(e) {
+            // change back to start pos
+            if (active) {
+                circle.style.left = circleStartX + "px";
+                circle.style.top = circleStartY + "px";
+
+                undoKit.push(new SetPosCmd(circle, circleCurrentX, circleCurrentY))
+                active = false;
+            }
+
+        }
+
+        function drag(e) {
+            if (active) {
+                e.preventDefault();
+
+                circleCurrentX = e.clientX - mouesStartX + circleStartX;
+                circleCurrentY = e.clientY - mouesStartY + circleStartY;
+
+                circle.style.left = circleCurrentX + "px";
+                circle.style.top = circleCurrentY + "px";
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

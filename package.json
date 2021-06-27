@@ -1,0 +1,38 @@
+{
+  "name": "undokit",
+  "version": "1.0.9",
+  "description": "Lightweight undo manager.",
+  "author": "Firat Kiral",
+  "license": "CC-BY-ND-4.0",
+  "main": "dist/undoKit.cjs",
+  "types": "dist/undoKit.d.ts",
+  "files": [
+    "dist/undoKit.cjs",
+    "dist/undoKit.d.ts",
+    "dist/undoKit.mjs",
+    "examples/**/*"
+  ],
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "node examples/node/index"
+  },
+  "keywords": [
+    "undo",
+    "redo",
+    "undokit"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/firatkiral/UndoKit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/firatkiral/UndoKit/issues"
+  },
+  "homepage": "https://github.com/firatkiral/UndoKit#readme",
+  "devDependencies": {
+    "fs-extra": "^10.0.0",
+    "typescript": "^4.3.4"
+  }
+}

@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "declaration": true,
+        "module": "es6",
+        "target": "es6",
+        "outDir": "build",
+    },
+    "exclude": [
+        "node_modules",
+        "build",
+        "dist"
+    ],
+    "include": [
+        "src/undoKit.ts"
+    ]
+}
